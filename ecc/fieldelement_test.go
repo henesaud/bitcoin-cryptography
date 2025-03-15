@@ -74,3 +74,49 @@ func TestDiv(t *testing.T) {
 		}
 	}
 }
+
+func TestMul(t *testing.T) {
+	tests := []struct {
+		num1     int64
+		num2     int64
+		prime    int64
+		expected int64
+	}{
+		{num1: 2, num2: 3, prime: 19, expected: 6},
+		{num1: 7, num2: 3, prime: 19, expected: 2},
+		{num1: 10, num2: 12, prime: 19, expected: 6},
+	}
+
+	for _, tt := range tests {
+		fe1 := NewFieldElement(tt.num1, tt.prime)
+		fe2 := NewFieldElement(tt.num2, tt.prime)
+		result := fe1.Mul(fe2)
+		if result.num != tt.expected {
+			t.Errorf("Mul(%d, %d) with prime %d: expected %d, got %d", tt.num1, tt.num2, tt.prime, tt.expected, result.num)
+		}
+	}
+}
+
+func TestMulThreeElements(t *testing.T) {
+	tests := []struct {
+		num1     int64
+		num2     int64
+		num3     int64
+		prime    int64
+		expected int64
+	}{
+		{num1: 2, num2: 3, num3: 4, prime: 19, expected: 5},
+		{num1: 7, num2: 3, num3: 5, prime: 19, expected: 10},
+		{num1: 95, num2: 45, num3: 31, prime: 97, expected: 23},
+	}
+
+	for _, tt := range tests {
+		fe1 := NewFieldElement(tt.num1, tt.prime)
+		fe2 := NewFieldElement(tt.num2, tt.prime)
+		fe3 := NewFieldElement(tt.num3, tt.prime)
+		result := fe1.Mul(fe2).Mul(fe3)
+		if result.num != tt.expected {
+			t.Errorf("Mul(%d, %d, %d) with prime %d: expected %d, got %d", tt.num1, tt.num2, tt.num3, tt.prime, tt.expected, result.num)
+		}
+	}
+}
