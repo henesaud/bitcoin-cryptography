@@ -22,11 +22,11 @@ func (f *FieldElement) String() string {
 }
 
 func (f *FieldElement) Equals(other *FieldElement) bool {
-	return f.prime == other.prime && f.num == other.num
+	return f.equalPrime(other) && f.num == other.num
 }
 
 func (f *FieldElement) Add(other *FieldElement) *FieldElement {
-	if f.equalPrime(other) {
+	if !f.equalPrime(other) {
 		panic("cannot add two numbers in different Fields")
 	}
 	num := (f.num + other.num) % f.prime
@@ -34,7 +34,7 @@ func (f *FieldElement) Add(other *FieldElement) *FieldElement {
 }
 
 func (f *FieldElement) Sub(other *FieldElement) *FieldElement {
-	if f.equalPrime(other) {
+	if !f.equalPrime(other) {
 		panic("cannot subtract two numbers in different Fields")
 	}
 	num := (f.num - other.num) % f.prime
@@ -42,7 +42,7 @@ func (f *FieldElement) Sub(other *FieldElement) *FieldElement {
 }
 
 func (f *FieldElement) Mul(other *FieldElement) *FieldElement {
-	if f.equalPrime(other) {
+	if !f.equalPrime(other) {
 		panic("cannot multiply two numbers in different Fields")
 	}
 	num := (f.num * other.num) % f.prime
@@ -59,7 +59,7 @@ func (f *FieldElement) Pow(exponent int64) *FieldElement {
 }
 
 func (f *FieldElement) Div(other *FieldElement) *FieldElement {
-	if f.equalPrime(other) {
+	if !f.equalPrime(other) {
 		panic("cannot divide two numbers in different Fields")
 	}
 	num := (f.num * other.Pow(f.prime-2).num) % f.prime
@@ -67,5 +67,5 @@ func (f *FieldElement) Div(other *FieldElement) *FieldElement {
 }
 
 func (f *FieldElement) equalPrime(other *FieldElement) bool {
-	return f.prime != other.prime
+	return f.prime == other.prime
 }
